@@ -728,7 +728,7 @@ class PackdleGame {
     
     copyToClipboard(text) {
         navigator.clipboard.writeText(text).then(() => {
-            alert('Results copied to clipboard!');
+            // Success - silently copied
         }).catch(() => {
             // Fallback
             const textarea = document.createElement('textarea');
@@ -737,7 +737,6 @@ class PackdleGame {
             textarea.select();
             document.execCommand('copy');
             document.body.removeChild(textarea);
-            alert('Results copied to clipboard!');
         });
     }
     
