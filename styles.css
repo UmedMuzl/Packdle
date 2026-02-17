@@ -26,8 +26,11 @@
 
 body {
     font-family: 'Arial', sans-serif;
-    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
-    background-attachment: fixed;
+    background: linear-gradient(0deg, var(--donk-green) 0%, var(--donk-green) 100%);
+    background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('bgfinal.webp');
+    background-repeat: repeat;
+    background-attachment: scroll;
+    background-size: 45%;
     color: var(--text-color);
     min-height: 100vh;
     display: flex;
