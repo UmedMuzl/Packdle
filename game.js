@@ -439,15 +439,24 @@ class PackdleGame {
             
             let tagsHTML = '';
             if (song.tags && song.tags.length > 0) {
-                // Always show colored tags based on target song (like Donkdle shows moves)
-                const targetTags = new Set((this.currentSong.tags || []).map(t => t.toLowerCase()));
-                tagsHTML = '<div class="autocomplete-tags">';
-                song.tags.forEach(tag => {
-                    const isCorrect = targetTags.has(tag.toLowerCase());
-                    const className = isCorrect ? 'tag-chip tag-correct' : 'tag-chip tag-absent';
-                    tagsHTML += `<span class="${className}">${tag}</span>`;
-                });
-                tagsHTML += '</div>';
+                if (previousGuess && previousGuess.feedback) {
+                    // Show colored tags only for previously guessed songs
+                    const targetTags = new Set((this.currentSong.tags || []).map(t => t.toLowerCase()));
+                    tagsHTML = '<div class="autocomplete-tags">';
+                    song.tags.forEach(tag => {
+                        const isCorrect = targetTags.has(tag.toLowerCase());
+                        const className = isCorrect ? 'tag-chip tag-correct' : 'tag-chip tag-absent';
+                        tagsHTML += `<span class="${className}">${tag}</span>`;
+                    });
+                    tagsHTML += '</div>';
+                } else {
+                    // Show neutral tags for non-guessed songs
+                    tagsHTML = '<div class="autocomplete-tags">';
+                    song.tags.forEach(tag => {
+                        tagsHTML += `<span class="tag-chip tag-absent" style="opacity: 0.6; border-color: var(--border);">${tag}</span>`;
+                    });
+                    tagsHTML += '</div>';
+                }
             }
             
             return `
