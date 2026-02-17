@@ -1,4 +1,4 @@
-# Packdle 🎵
+# Packdle
 
 A Heardle-style music guessing game featuring DK64-converted songs from the [Candy's Shop](https://github.com/theballaam96/candys-shop) music library.
 
