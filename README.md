@@ -9,7 +9,7 @@ A Heardle-style music guessing game featuring DK64-converted songs from the [Can
 - **Random Mode** - Unlimited random puzzles
 - **Hybrid Audio Player** - Supports both YouTube and GitHub-hosted audio
 - **Progressive Reveal** - 6 attempts with increasing playback time (1s → 2s → 4s → 7s → 11s → 16s)
-- 📊 **Statistics Tracking** - Track your wins, streaks, and performance
+- **Statistics Tracking** - Track your wins, streaks, and performance
 - **Dark Theme** - Donkdle-inspired UI with Jumpman font
 
 ## How to Play
