@@ -296,6 +296,36 @@ class PackdleGame {
         }).join('');
     }
     
+    compareTags(guessedTags, correctTags) {
+        const guessedSet = new Set(guessedTags.map(t => t.toLowerCase()));
+        const correctSet = new Set(correctTags.map(t => t.toLowerCase()));
+        
+        const common = [];
+        const extra = [];
+        
+        guessedTags.forEach(tag => {
+            if (correctSet.has(tag.toLowerCase())) {
+                common.push(tag);
+            } else {
+                extra.push(tag);
+            }
+        });
+        
+        // Determine overall status
+        let status = 'absent';
+        if (common.length > 0 && extra.length === 0 && common.length === correctTags.length) {
+            status = 'correct';
+        } else if (common.length > 0) {
+            status = 'present';
+        }
+        
+        return {
+            status: status,
+            common: common,
+            extra: extra
+        };
+    }
+    
     playAudio(fullSong = false) {
         if (this.gameOver && !fullSong) return;
         
@@ -399,9 +429,35 @@ class PackdleGame {
             return;
         }
         
-        dropdown.innerHTML = matches.map((song, index) => 
-            `<div class="autocomplete-item" data-index="${index}">${song.game} - ${song.song}</div>`
-        ).join('');
+        dropdown.innerHTML = matches.map((song, index) => {
+            const fullName = `${song.game} - ${song.song}`;
+            
+            // Check if already guessed
+            const previousGuess = this.attempts.find(a => 
+                !a.skipped && a.guess.toLowerCase() === fullName.toLowerCase()
+            );
+            
+            let tagsHTML = '';
+            if (song.tags && song.tags.length > 0) {
+                // Always show colored tags based on target song (like Donkdle shows moves)
+                const targetTags = new Set((this.currentSong.tags || []).map(t => t.toLowerCase()));
+                tagsHTML = '<div class="autocomplete-tags">';
+                song.tags.forEach(tag => {
+                    const isCorrect = targetTags.has(tag.toLowerCase());
+                    const className = isCorrect ? 'tag-chip tag-correct' : 'tag-chip tag-absent';
+                    tagsHTML += `<span class="${className}">${tag}</span>`;
+                });
+                tagsHTML += '</div>';
+            }
+            
+            return `
+                <div class="autocomplete-item ${previousGuess ? 'already-guessed' : ''}" data-index="${index}">
+                    <div class="autocomplete-main">${fullName}</div>
+                    <div class="autocomplete-details">${song.game} • ${song.song}</div>
+                    ${tagsHTML}
+                </div>
+            `;
+        }).join('');
         
         dropdown.classList.add('show');
         this.autocompleteMatches = matches;
@@ -480,13 +536,34 @@ class PackdleGame {
         const correctAnswer = `${this.currentSong.game} - ${this.currentSong.song}`;
         const isCorrect = guess.toLowerCase() === correctAnswer.toLowerCase();
         
-        // Check if it's from the same game (for yellow feedback)
-        const isSameGame = !isCorrect && guess.toLowerCase().includes(this.currentSong.game.toLowerCase());
+        // Find the guessed song object
+        const guessedSong = this.songs.find(s => 
+            `${s.game} - ${s.song}`.toLowerCase() === guess.toLowerCase()
+        );
+        
+        if (!guessedSong) {
+            alert('Please select a valid song from the list!');
+            return;
+        }
+        
+        // Create detailed feedback
+        const feedback = {
+            game: {
+                value: guessedSong.game,
+                status: guessedSong.game === this.currentSong.game ? 'correct' : 'absent'
+            },
+            song: {
+                value: guessedSong.song,
+                status: guessedSong.song === this.currentSong.song ? 'correct' : 'absent'
+            },
+            tags: this.compareTags(guessedSong.tags || [], this.currentSong.tags || [])
+        };
         
         this.attempts.push({
             guess: guess,
+            song: guessedSong,
             correct: isCorrect,
-            sameGame: isSameGame,
+            feedback: feedback,
             skipped: false
         });
         
@@ -534,36 +611,54 @@ class PackdleGame {
     renderAttempts() {
         const container = document.getElementById('attemptsContainer');
         container.innerHTML = this.attempts.map((attempt, index) => {
-            const attemptNum = index + 1;
-            const duration = this.durations[index];
-            
-            let className = 'attempt-tile';
-            let result = '';
-            let guessText = '';
-            
             if (attempt.skipped) {
-                className += ' skipped';
-                result = '⏭';
-                guessText = 'Skipped';
-            } else if (attempt.correct) {
-                className += ' correct';
-                result = '✓';
-                guessText = attempt.guess;
-            } else if (attempt.sameGame) {
-                className += ' present';
-                result = '🎮';
-                guessText = attempt.guess;
+                return `
+                    <div class="guess-row">
+                        <div class="guess-location-name">Skipped</div>
+                        <div class="guess-cells-container">
+                            <div class="guess-cell absent">
+                                <div class="cell-label">ATTEMPT #${index + 1}</div>
+                                <div class="cell-value">Skipped ⏭</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            const f = attempt.feedback;
+            
+            // Build tags display
+            let tagsHTML = '';
+            if (f.tags.common.length === 0 && f.tags.extra.length === 0) {
+                tagsHTML = '<div class="cell-value">None</div>';
             } else {
-                className += ' incorrect';
-                result = '✗';
-                guessText = attempt.guess;
+                tagsHTML = '<div class="tags-container">';
+                f.tags.common.forEach(tag => {
+                    tagsHTML += `<span class="tag-chip tag-correct">✓ ${tag}</span>`;
+                });
+                f.tags.extra.forEach(tag => {
+                    tagsHTML += `<span class="tag-chip tag-absent">${tag}</span>`;
+                });
+                tagsHTML += '</div>';
             }
             
             return `
-                <div class="${className}">
-                    <span class="attempt-number">#${attemptNum}</span>
-                    <span class="attempt-guess">${guessText}</span>
-                    <span class="attempt-result">${result}</span>
+                <div class="guess-row">
+                    <div class="guess-location-name">${attempt.guess}</div>
+                    <div class="guess-cells-container">
+                        <div class="guess-cell ${f.game.status}">
+                            <div class="cell-label">GAME</div>
+                            <div class="cell-value">${f.game.value}</div>
+                        </div>
+                        <div class="guess-cell ${f.song.status}">
+                            <div class="cell-label">SONG</div>
+                            <div class="cell-value">${f.song.value}</div>
+                        </div>
+                        <div class="guess-cell ${f.tags.status}">
+                            <div class="cell-label">TAGS</div>
+                            ${tagsHTML}
+                        </div>
+                    </div>
                 </div>
             `;
         }).join('');
@@ -607,9 +702,10 @@ class PackdleGame {
     
     shareResults() {
         const emoji = this.attempts.map(attempt => {
-            if (attempt.correct) return '🟩';
             if (attempt.skipped) return '⬜';
-            if (attempt.sameGame) return '🟨';
+            if (attempt.correct) return '🟩';
+            if (attempt.feedback && attempt.feedback.game.status === 'correct') return '🟨';
+            if (attempt.feedback && attempt.feedback.tags.status === 'present') return '🟧';
             return '🟥';
         }).join('');
         

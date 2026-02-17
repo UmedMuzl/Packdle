@@ -253,50 +253,88 @@ body {
     margin-bottom: 30px;
 }
 
-.attempt-tile {
+.guess-row {
+    margin-bottom: 15px;
+}
+
+.guess-location-name {
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: var(--text-color);
+    font-size: 1.1rem;
+}
+
+.guess-cells-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.guess-cell {
     background: var(--card-bg);
     border: 2px solid var(--border);
     border-radius: 8px;
-    padding: 12px 15px;
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
+    padding: 12px;
+    text-align: center;
+    transition: all 0.3s ease;
 }
 
-.attempt-number {
-    font-weight: bold;
-    color: var(--text-muted);
-    width: 30px;
-}
-
-.attempt-guess {
-    flex: 1;
-    color: var(--text-color);
-}
-
-.attempt-result {
-    font-size: 1.2rem;
-}
-
-.attempt-tile.correct {
+.guess-cell.correct {
     background: var(--correct);
     border-color: var(--correct);
 }
 
-.attempt-tile.present {
+.guess-cell.present {
     background: var(--present);
     border-color: var(--present);
 }
 
-.attempt-tile.incorrect {
+.guess-cell.absent {
     background: var(--absent);
     border-color: var(--absent);
 }
 
-.attempt-tile.skipped {
-    background: var(--hover);
-    border-color: var(--border);
+.cell-label {
+    font-size: 0.7rem;
+    font-weight: bold;
+    color: var(--text-muted);
+    margin-bottom: 5px;
+    letter-spacing: 0.5px;
+}
+
+.cell-value {
+    font-size: 0.95rem;
+    color: var(--text-color);
+    font-weight: 500;
+}
+
+.tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    justify-content: center;
+    margin-top: 8px;
+}
+
+.tag-chip {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border: 2px solid;
+}
+
+.tag-chip.tag-correct {
+    background: var(--correct);
+    border-color: var(--correct);
+    color: var(--text-color);
+}
+
+.tag-chip.tag-absent {
+    background: var(--absent);
+    border-color: var(--absent);
+    color: var(--text-muted);
 }
 
 .guess-input-container {
@@ -351,6 +389,34 @@ body {
 
 .autocomplete-item:last-child {
     border-bottom: none;
+}
+
+.autocomplete-main {
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.autocomplete-details {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 5px;
+}
+
+.autocomplete-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 5px;
+}
+
+.autocomplete-tags .tag-chip {
+    font-size: 0.7rem;
+    padding: 2px 8px;
+}
+
+.autocomplete-item.already-guessed {
+    opacity: 0.6;
+    background: var(--hover);
 }
 
 .game-buttons {
@@ -502,6 +568,11 @@ body {
 
 .share-button:hover {
     background: #05a855;
+}
+
+.autocomplete-item.already-guessed {
+    opacity: 0.6;
+    background: var(--hover);
 }
 
 @keyframes slideIn {
