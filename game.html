@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Packdle - Play</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="game-container">
+        <div class="game-header">
+            <h1 class="game-title">PACKDLE</h1>
+            <div class="header-buttons">
+                <button class="icon-button" id="homeBtn" title="Home">🏠</button>
+                <button class="icon-button" id="helpBtn" title="Help">❓</button>
+                <button class="icon-button" id="statsBtn" title="Stats">📊</button>
+            </div>
+        </div>
+
+        <div class="audio-player-container">
+            <div class="audio-controls">
+                <button class="play-button" id="playBtn">▶ Play</button>
+                <div class="progress-info">
+                    <div class="progress-bar">
+                        <div class="progress-segments" id="progressSegments"></div>
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <span id="timeDisplay">0:00 / 0:00</span>
+                </div>
+            </div>
+            <div id="playerContainer"></div>
+        </div>
+
+        <div class="attempts-container" id="attemptsContainer">
+            <!-- Attempt tiles will be dynamically added here -->
+        </div>
+
+        <div class="guess-input-container">
+            <input 
+                type="text" 
+                class="guess-input" 
+                id="guessInput" 
+                placeholder="Type to search for a song..."
+                autocomplete="off"
+            >
+            <div class="autocomplete-dropdown" id="autocompleteDropdown"></div>
+        </div>
+
+        <div class="game-buttons">
+            <button class="submit-button" id="submitBtn">Submit Guess</button>
+            <button class="skip-button" id="skipBtn">Skip</button>
+        </div>
+    </div>
+
+    <!-- Help Modal -->
+    <div class="modal" id="helpModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">How to Play</h2>
+                <button class="close-button" id="closeHelp">×</button>
+            </div>
+            <div class="modal-body">
+                <p>Listen to the intro of a DK64-converted song and guess the game and song name!</p>
+                
+                <h3>Rules</h3>
+                <p>• You have 6 attempts to guess the correct song</p>
+                <p>• Each wrong or skipped guess unlocks more of the song</p>
+                <p>• Playback lengths: 1s, 2s, 4s, 7s, 11s, 16s</p>
+                <p>• Type to search through the song list</p>
+                
+                <h3>Feedback Colors</h3>
+                <p>🟩 Green = Correct song!</p>
+                <p>🟨 Yellow = Right game, wrong song</p>
+                <p>🟥 Red = Wrong game and song</p>
+                <p>⬜ White = Skipped</p>
+                
+                <h3>Modes</h3>
+                <p>📅 <strong>Daily Challenge:</strong> One puzzle per day, same for everyone</p>
+                <p>🎲 <strong>Random Game:</strong> Unlimited random puzzles</p>
+                
+                <p style="margin-top: 20px; font-size: 0.9rem; color: var(--text-muted);">
+                    Songs from the <a href="https://github.com/theballaam96/candys-shop" target="_blank" style="color: var(--donk-green);">Candy's Shop</a> DK64 music library
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats Modal -->
+    <div class="modal" id="statsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Statistics</h2>
+                <button class="close-button" id="closeStats">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value" id="gamesPlayed">0</div>
+                        <div class="stat-label">Played</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="winRate">0</div>
+                        <div class="stat-label">Win %</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="currentStreak">0</div>
+                        <div class="stat-label">Current Streak</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="maxStreak">0</div>
+                        <div class="stat-label">Max Streak</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Over Modal -->
+    <div class="modal" id="gameOverModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="gameOverTitle">Game Over</h2>
+                <button class="close-button" id="closeGameOver">×</button>
+            </div>
+            <div class="modal-body">
+                <p id="gameOverMessage"></p>
+                <h3 style="margin-top: 20px;">The song was:</h3>
+                <p id="correctAnswer" style="font-size: 1.2rem; color: var(--donk-green); font-weight: bold;"></p>
+                <button class="share-button" id="listenFullBtn" style="background: var(--card-bg); margin-top: 10px;">🎵 Listen to Full Song</button>
+                <button class="share-button" id="shareBtn">Share Results</button>
+                <button class="share-button" id="newGameBtn" style="background: var(--card-bg); margin-top: 10px;">New Random Game</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>
