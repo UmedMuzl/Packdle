@@ -4,14 +4,13 @@ A Heardle-style music guessing game featuring DK64-converted songs from the [Can
 
 ## Features
 
-- 🎮 **1,693 BGM Songs** - Curated from Candy's Shop collection
-- 📅 **Daily Challenge** - One puzzle per day, same for everyone
-- 🎲 **Random Mode** - Unlimited random puzzles
-- 🎵 **Hybrid Audio Player** - Supports both YouTube and GitHub-hosted audio
-- ⏱️ **Progressive Reveal** - 6 attempts with increasing playback time (1s → 2s → 4s → 7s → 11s → 16s)
-- 🔍 **Smart Autocomplete** - Easy song search
+- **1,693 BGM Songs** - Curated from Candy's Shop collection
+- **Daily Challenge** - One puzzle per day, same for everyone
+- **Random Mode** - Unlimited random puzzles
+- **Hybrid Audio Player** - Supports both YouTube and GitHub-hosted audio
+- **Progressive Reveal** - 6 attempts with increasing playback time (1s → 2s → 4s → 7s → 11s → 16s)
 - 📊 **Statistics Tracking** - Track your wins, streaks, and performance
-- 🌙 **Dark Theme** - Donkdle-inspired UI with Jumpman font
+- **Dark Theme** - Donkdle-inspired UI with Jumpman font
 
 ## How to Play
 
@@ -35,13 +34,13 @@ python3 -m http.server 8001
 
 ## Data Source
 
-All songs are sourced from the [Candy's Shop](https://github.com/theballaam96/candys-shop) DK64 music library. This project filters for BGM category entries and deduplicates to provide the latest versions of each song.
+All songs are sourced from the [Candy's Shop](https://theballaam96.github.io/PackBuilder/) DK64 music library. This project filters for BGM category entries and deduplicates to provide the latest versions of each song.
 
 ## Credits
 
-- **Songs**: [theballaam96's Candy's Shop](https://github.com/theballaam96/candys-shop)
+- **Songs**: [theballaam96's Candy's Shop](https://theballaam96.github.io/PackBuilder/)
 - **Font**: Jumpman.ttf
-- **Inspired by**: [Heardle](https://www.spotify.com/heardle/) and [Donkdle](https://github.com/yourusername/Donkdle)
+- **Inspired by**: Inspired by [Heardle](https://ninjigalaxy.github.io/mario-heardle/)
 
 ## License
 
