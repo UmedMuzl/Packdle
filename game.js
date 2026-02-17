@@ -715,7 +715,7 @@ class PackdleGame {
         const modeText = this.mode === 'daily' ? 
             `Packdle ${this.getDateString()}` : 'Packdle (Random)';
         
-        const text = `${modeText}\n${result}\n\n${emoji}\n\nPlay at: ${window.location.origin}`;
+        const text = `${modeText}\n${result}\n\n${emoji}\n\nPlay at: https://umedmuzl.github.io/Packdle/`;
         
         if (navigator.share) {
             navigator.share({ text }).catch(() => {
